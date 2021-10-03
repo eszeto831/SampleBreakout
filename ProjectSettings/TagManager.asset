@@ -13,10 +13,10 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - Bounds
+  - Objects
+  - VFX
+  - BottomVFX
   - 
   - 
   - 
@@ -40,4 +40,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: BottomVFX
+    uniqueID: 4287247799
+    locked: 0
+  - name: Bounds
+    uniqueID: 3867695537
+    locked: 0
+  - name: Objects
+    uniqueID: 3360685285
+    locked: 0
+  - name: VFX
+    uniqueID: 2468025811
     locked: 0
