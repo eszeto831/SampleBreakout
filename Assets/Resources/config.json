@@ -1,0 +1,51 @@
+{
+	"GameVersion":"1.0a",
+	"Pages":
+	[
+		{
+			"Title":"Intro",
+			"Text":"This is the start of a space pilot manual",
+			"Image":""
+		},
+		{
+			"Title":"Chapter 1",
+			"Text":"This could be you...",
+			"Image":"Images/DangerZone"
+		},
+		{
+			"Title":"Chapter 1",
+			"Text":"In a helmet",
+			"Image":"Images/HighFlyers"
+		},
+		{
+			"Title":"Chapter 2",
+			"Text":"This could be the start of a journey",
+			"Image":""
+		},
+		{
+			"Title":"Chapter 2",
+			"Text":"Press the start button and fly away",
+			"Image":""
+		},
+		{
+			"Title":"Chapter 3",
+			"Text":"Maybe you will change crews",
+			"Image":"Images/NightHawks"
+		},
+		{
+			"Title":"Chapter 4",
+			"Text":"Maybe you will change crews again",
+			"Image":"Images/YellowTigers"
+		},
+		{
+			"Title":"End",
+			"Text":"The possibilities are limitless",
+			"Image":""
+		},
+		{
+			"Title":"Restart",
+			"Text":"Return to the starting point",
+			"Image":""
+		}
+	]
+}
