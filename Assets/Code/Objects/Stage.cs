@@ -4,4 +4,14 @@ public class Stage
     {
 
     }
+
+    void Update()
+    {
+
+    }
+
+    void FixedUpdate()
+    {
+
+    }
 }

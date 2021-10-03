@@ -2,8 +2,8 @@ public class Player
 {
     public BasePaddle Paddle;
 
-    public void Init()
+    public void SetPaddle(BasePaddle paddle)
     {
-        Paddle = new BasePaddle();
+        Paddle = paddle;
     }
 }

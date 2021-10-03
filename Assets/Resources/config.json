@@ -2,8 +2,11 @@
 	"GameVersion":"1.0a",
 	"Paddle":
 	{
-		"Width": 2.5,
-		"Height": 0.3,
+		"Size":
+		{
+			"X":2.5,
+			"Y":0.3
+		},
 		"StartingPosition":
 		{
 			"X":0,
@@ -20,10 +23,15 @@
 	},
 	"Wall":
 	{
-		"WallSize":
+		"Size":
 		{
-			"X":5,
+			"X":9,
 			"Y":5
+		},
+		"StartingPosition":
+		{
+			"X":0,
+			"Y":6
 		}
 	}
 }

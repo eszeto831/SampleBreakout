@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class BaseBall : MonoBehaviour
 {
-    public void Init()
+    public SpriteRenderer Sprite;
+    public BoxCollider2D HitBox;
+
+    public void Init(DataBall config)
     {
 
     }

@@ -14,6 +14,10 @@ public class PersistentScene : MonoBehaviour
 		Application.runInBackground = true;
 
         GameConfig.Instance.ParseConfig();
+
+        GameInstanceManager.Instance.InitCamera(MainCamera);
+        GameInstanceManager.Instance.InitPlayer();
+
         SceneManager.LoadScene("GameScene");
 
     }

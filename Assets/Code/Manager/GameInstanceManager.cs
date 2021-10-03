@@ -7,30 +7,36 @@ using System.Linq;
 
 public class GameInstanceManager
 {
-	public Camera MainCamera;
+    public Camera MainCamera;
+    public Player CurrentPlayer;
 
 
     private static GameInstanceManager m_Instance;
 
-	public static GameInstanceManager Instance
-	{
-		get
-		{
-			if (m_Instance == null) 
-			{
-				m_Instance = new GameInstanceManager ();
-			}
-			return m_Instance;
-		}
-	}
+    public static GameInstanceManager Instance
+    {
+        get
+        {
+            if (m_Instance == null)
+            {
+                m_Instance = new GameInstanceManager();
+            }
+            return m_Instance;
+        }
+    }
 
-	public GameInstanceManager()
-	{
+    public GameInstanceManager()
+    {
 
-	}
+    }
 
-	public void InitCamara(Camera camera)
-	{
-		MainCamera = camera;
-	}
+    public void InitCamera(Camera camera)
+    {
+        MainCamera = camera;
+    }
+
+    public void InitPlayer()
+    {
+        CurrentPlayer = new Player();
+    }
 }
