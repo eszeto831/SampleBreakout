@@ -9,7 +9,7 @@ public class GameInstanceManager
 {
     public Camera MainCamera;
     public Player CurrentPlayer;
-
+    public Stage CurrentGame;
 
     private static GameInstanceManager m_Instance;
 
@@ -38,5 +38,26 @@ public class GameInstanceManager
     public void InitPlayer()
     {
         CurrentPlayer = new Player();
+    }
+
+    public void SetCurrentGame(Stage currentGame)
+    {
+        CurrentGame = currentGame;
+    }
+
+    public void GameUpdate()
+    {
+        if (CurrentGame != null)
+        {
+            CurrentGame.GameUpdate();
+        }
+    }
+
+    public void FixedGameUpdate()
+    {
+        if (CurrentGame != null)
+        {
+            CurrentGame.FixedGameUpdate();
+        }
     }
 }

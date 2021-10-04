@@ -15,5 +15,11 @@ public class GamePadController : BasePlayerController
 	override public void FixedGameUpdate()
 	{
         //do movement actions
+        if (ControlledPaddle != null)
+        {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
+            ControlledPaddle.Move(moveHorizontal, moveVertical);
+        }
     }
 }
