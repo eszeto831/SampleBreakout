@@ -31,12 +31,6 @@ public class GameScene : MonoBehaviour
         boundaryPosition.xMax = GameWorldBoundary.bounds.size.x / 2;
         boundaryPosition.yMin = GameWorldBoundary.bounds.size.y / 2 * -1;
         boundaryPosition.yMax = GameWorldBoundary.bounds.size.y / 2;
-        /*
-        boundaryPosition.xMin = -11.54f;
-        boundaryPosition.xMax = 11.54f;
-        boundaryPosition.yMin = -5.52f;
-        boundaryPosition.yMax = 4.22f;
-        */
         GameInstanceManager.Instance.CurrentGame.Boundary = boundaryPosition;
     }
 
