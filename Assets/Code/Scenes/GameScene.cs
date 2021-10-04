@@ -22,6 +22,7 @@ public class GameScene : MonoBehaviour
         stage.Init(GameWorldContainer);
         GameInstanceManager.Instance.SetCurrentGame(stage);
         createBoundary();
+        stage.Start();
     }
 
     void createBoundary()

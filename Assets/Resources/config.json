@@ -20,7 +20,8 @@
 		{
 			"X":0,
 			"Y":0.5
-		}
+		},
+		"StartingSpeed": 10
 	},
 	"Wall":
 	{

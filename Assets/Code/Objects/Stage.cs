@@ -6,6 +6,7 @@ public class Stage
     public GameScene.Boundary Boundary;
 
     private bool m_Pause = false;
+    private BaseBall m_Ball;
 
     public void Init(GameObject gameWorldContainer)
     {
@@ -13,6 +14,11 @@ public class Stage
         initPaddle();
         initBall();
         initGameField();
+    }
+
+    public void Start()
+    {
+        m_Ball.StartBall();
     }
 
     void initPaddle()
@@ -47,6 +53,8 @@ public class Stage
 
         var ball = ballObj.GetComponent<BaseBall>();
         ball.Init(ballConfig);
+
+        m_Ball = ball;
     }
 
     void initGameField()

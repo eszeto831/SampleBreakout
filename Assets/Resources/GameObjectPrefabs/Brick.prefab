@@ -55,7 +55,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 2.5, y: 0.3}
+  m_Size: {x: 2, y: 0.5}
   m_EdgeRadius: 0
 --- !u!1 &795079319638761636
 GameObject:
@@ -136,7 +136,7 @@ GameObject:
   m_Component:
   - component: {fileID: 795079320088299817}
   - component: {fileID: 795079320088299816}
-  m_Layer: 9
+  m_Layer: 0
   m_Name: PaddleSprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
