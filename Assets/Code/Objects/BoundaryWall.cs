@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BaseBrick : CollidableObject
+public class BoundaryWall : CollidableObject
 {
     public SpriteRenderer Sprite;
 
