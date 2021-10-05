@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using DG.Tweening;
 
 public class Stage
 {
@@ -158,27 +159,52 @@ public class Stage
         if(m_countdownState == CountdownStates.THREE)
         {
             Debug.LogError("edmond :: 3");
-            CountdownContainer.SetActive(true);
+            CountdownContainer.transform.DOKill();
+            CountdownText.DOKill();
+            CountdownContainer.transform.DOScaleY(1f, 0.2f);
             CountdownText.text = "3";
+            CountdownText.alpha = (150f / 255f);
+            CountdownText.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOFade(0, 0.7f);
             m_countdownState = CountdownStates.TWO;
         }
         else if (m_countdownState == CountdownStates.TWO && Time.time - m_countdownStartTime > 1)
         {
             Debug.LogError("edmond :: 2");
+            CountdownContainer.transform.DOKill();
+            CountdownContainer.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOKill();
             CountdownText.text = "2";
+            CountdownText.alpha = (150f / 255f);
+            CountdownText.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOFade(0, 0.7f);
             m_countdownState = CountdownStates.ONE;
         }
         else if (m_countdownState == CountdownStates.ONE && Time.time - m_countdownStartTime > 2)
         {
             Debug.LogError("edmond :: 1");
+            CountdownContainer.transform.DOKill();
+            CountdownContainer.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOKill();
             CountdownText.text = "1";
+            CountdownText.alpha = (150f / 255f);
+            CountdownText.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOFade(0, 0.7f);
             m_countdownState = CountdownStates.START;
         }
         else if (m_countdownState == CountdownStates.START && Time.time - m_countdownStartTime > 3)
         {
             Debug.LogError("edmond :: start");
+            CountdownContainer.transform.DOKill();
+            CountdownContainer.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOKill();
             CountdownText.text = "Start";
-            CountdownContainer.SetActive(false);
+            CountdownText.alpha = (150f / 255f);
+            CountdownText.transform.localScale = new Vector3(1, 1, 1);
+            CountdownText.DOFade(0, 0.7f);
+            CountdownText.transform.DOScaleX(5f, 0.2f).SetDelay(.2f);
+            CountdownText.transform.DOScaleY(0f, 0.2f).SetDelay(.2f);
+            CountdownContainer.transform.DOScaleY(0f, 0.2f).SetDelay(.3f);
             m_ball.StartBall();
             m_countdownActive = false;
         }
