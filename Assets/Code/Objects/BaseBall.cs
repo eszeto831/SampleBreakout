@@ -98,7 +98,7 @@ public class BaseBall : MonoBehaviour
         var deathBoundary = other.gameObject.GetComponentInParent<BoundaryDeath>();
         if (deathBoundary != null)
         {
-            GameInstanceManager.Instance.CurrentGame.ResetBall();
+            GameInstanceManager.Instance.CurrentGame.ResetBallAndPaddle();
         }
     }
 

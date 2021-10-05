@@ -63,9 +63,15 @@ public class Stage
     public void RestartGame()
     {
         m_bricks = new List<BaseBrick>();
+
         var ballConfig = GameConfig.Instance.Ball;
         m_ball.Init(ballConfig);
         m_ball.transform.localPosition = new Vector3(ballConfig.StartingPosition.X, ballConfig.StartingPosition.Y, 0);
+
+        var paddleConfig = GameConfig.Instance.Paddle;
+        GameInstanceManager.Instance.CurrentPlayer.Paddle.Init(paddleConfig);
+        GameInstanceManager.Instance.CurrentPlayer.Paddle.transform.localPosition = new Vector3(paddleConfig.StartingPosition.X, paddleConfig.StartingPosition.Y, 0);
+
         initGameField();
         StartStage();
     }
@@ -150,12 +156,17 @@ public class Stage
         }
     }
 
-    public void ResetBall()
+    public void ResetBallAndPaddle()
     {
         m_ball.KillBall();
         var ballConfig = GameConfig.Instance.Ball;
         m_ball.Init(ballConfig);
         m_ball.transform.localPosition = new Vector3(ballConfig.StartingPosition.X, ballConfig.StartingPosition.Y, 0);
+
+        var paddleConfig = GameConfig.Instance.Paddle;
+        GameInstanceManager.Instance.CurrentPlayer.Paddle.Init(paddleConfig);
+        GameInstanceManager.Instance.CurrentPlayer.Paddle.transform.localPosition = new Vector3(paddleConfig.StartingPosition.X, paddleConfig.StartingPosition.Y, 0);
+
         StartCountdown();
     }
 
@@ -262,6 +273,8 @@ public class Stage
             var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
             var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
             audioObj.Init(CountdownSFX);
+
+            GameInstanceManager.Instance.CurrentPlayer.Paddle.UnfreezePaddle();
         }
         else if (m_countdownState == CountdownStates.START && Time.time - m_countdownStartTime > 3)
         {

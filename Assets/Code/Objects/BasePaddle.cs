@@ -6,6 +6,7 @@ public class BasePaddle : MonoBehaviour
     public BoxCollider2D HitBox;
 
     private float m_speed;
+    private bool m_frozen;
 
     public void Init(DataPaddle config)
     {
@@ -13,16 +14,26 @@ public class BasePaddle : MonoBehaviour
         HitBox.size = new Vector2(config.Size.X, config.Size.Y);
 
         m_speed = config.Speed;
+        m_frozen = true;
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
+
+    public void UnfreezePaddle()
+    {
+        m_frozen = false;
     }
 
     public void Move(float moveHorizontal, float moveVertical)
     {
-        moveVertical = 0;
-        Vector2 velocity = new Vector2(moveHorizontal, moveVertical) * m_speed;
-        velocity = MovementUtils.ModifyVelocityWithBounds(velocity, gameObject.transform.position, Sprite);
-        GetComponent<Rigidbody2D>().velocity = velocity;
+        if (!m_frozen)
+        {
+            moveVertical = 0;
+            Vector2 velocity = new Vector2(moveHorizontal, moveVertical) * m_speed;
+            velocity = MovementUtils.ModifyVelocityWithBounds(velocity, gameObject.transform.position, Sprite);
+            GetComponent<Rigidbody2D>().velocity = velocity;
 
-        gameObject.transform.position = MovementUtils.ModifyPositionWithBounds(gameObject.transform.position, Sprite);
+            gameObject.transform.position = MovementUtils.ModifyPositionWithBounds(gameObject.transform.position, Sprite);
+        }
     }
 
     public float GetMomentumModifier()
