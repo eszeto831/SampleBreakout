@@ -5,20 +5,20 @@ public class BasePaddle : MonoBehaviour
     public SpriteRenderer Sprite;
     public BoxCollider2D HitBox;
 
-    private float speed;
+    private float m_speed;
 
     public void Init(DataPaddle config)
     {
         Sprite.size = new Vector2(config.Size.X, config.Size.Y);
         HitBox.size = new Vector2(config.Size.X, config.Size.Y);
 
-        speed = config.Speed;
+        m_speed = config.Speed;
     }
 
     public void Move(float moveHorizontal, float moveVertical)
     {
         moveVertical = 0;
-        Vector2 velocity = new Vector2(moveHorizontal, moveVertical) * speed;
+        Vector2 velocity = new Vector2(moveHorizontal, moveVertical) * m_speed;
         velocity = MovementUtils.ModifyVelocityWithBounds(velocity, gameObject.transform.position, Sprite);
         GetComponent<Rigidbody2D>().velocity = velocity;
 

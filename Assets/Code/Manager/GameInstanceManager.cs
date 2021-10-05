@@ -11,17 +11,17 @@ public class GameInstanceManager
     public Player CurrentPlayer;
     public Stage CurrentGame;
 
-    private static GameInstanceManager m_Instance;
+    private static GameInstanceManager m_instance;
 
     public static GameInstanceManager Instance
     {
         get
         {
-            if (m_Instance == null)
+            if (m_instance == null)
             {
-                m_Instance = new GameInstanceManager();
+                m_instance = new GameInstanceManager();
             }
-            return m_Instance;
+            return m_instance;
         }
     }
 

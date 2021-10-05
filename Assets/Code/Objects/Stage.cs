@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Stage
@@ -5,11 +6,14 @@ public class Stage
     public GameObject GameWorldContainer;
     public GameScene.Boundary Boundary;
 
-    private bool m_Pause = false;
-    private BaseBall m_Ball;
+    private bool m_pause = false;
+    private BaseBall m_ball;
+    private List<BaseBrick> m_bricks;
 
     public void Init(GameObject gameWorldContainer)
     {
+        m_bricks = new List<BaseBrick>();
+
         GameWorldContainer = gameWorldContainer;
         initPaddle();
         initBall();
@@ -18,7 +22,7 @@ public class Stage
 
     public void Start()
     {
-        m_Ball.StartBall();
+        m_ball.StartBall();
     }
 
     void initPaddle()
@@ -54,7 +58,7 @@ public class Stage
         var ball = ballObj.GetComponent<BaseBall>();
         ball.Init(ballConfig);
 
-        m_Ball = ball;
+        m_ball = ball;
     }
 
     void initGameField()
@@ -85,23 +89,27 @@ public class Stage
 
                 var brick = brickObj.GetComponent<BaseBrick>();
                 brick.Init();
+
+                m_bricks.Add(brick);
             }
         }
     }
 
     public void GameUpdate()
     {
-        if (!m_Pause)
+        if (!m_pause)
         {
             GameInstanceManager.Instance.CurrentPlayer.Controller.GameUpdate();
+            m_ball.GameUpdate();
         }
     }
 
     public void FixedGameUpdate()
     {
-        if (!m_Pause)
+        if (!m_pause)
         {
             GameInstanceManager.Instance.CurrentPlayer.Controller.FixedGameUpdate();
+            m_ball.FixedGameUpdate();
         }
     }
 }
