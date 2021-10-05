@@ -5,17 +5,19 @@ public class BaseBall : MonoBehaviour
     public SpriteRenderer Sprite;
     public BoxCollider2D HitBox;
 
-    private float m_currentSpeed;
+    private float m_defaultSpeed;
+    private float m_speedBoost;
     private CollidableObject m_currentTriggeredCollider;
 
     public void Init(DataBall config)
     {
-        m_currentSpeed = config.StartingSpeed;
+        m_defaultSpeed = config.StartingSpeed;
+        m_speedBoost = 0;
     }
 
     public void StartBall()
     {
-        Vector2 velocity = new Vector2(Random.Range(-.2f,.2f), -1).normalized * m_currentSpeed;
+        Vector2 velocity = new Vector2(Random.Range(-.2f,.2f), -1).normalized * m_defaultSpeed;
         GetComponent<Rigidbody2D>().velocity = velocity;
     }
 
@@ -132,6 +134,8 @@ public class BaseBall : MonoBehaviour
             if (brick != null)
             {
                 brick.Kill();
+                m_speedBoost = brick.GetSpeedBoost();
+                GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity.normalized * m_defaultSpeed * m_speedBoost;
             }
 
             m_currentTriggeredCollider = null;
