@@ -1189,6 +1189,8 @@ MonoBehaviour:
   GameWorldBoundary: {fileID: 1306913770}
   CountdownContainer: {fileID: 1763577771}
   CountdownText: {fileID: 708543768}
+  SFXContainer: {fileID: 1364986870643778982, guid: 103e285f3ba7ad14488326fa085f7c71,
+    type: 3}
 --- !u!1 &2143512091
 GameObject:
   m_ObjectHideFlags: 0

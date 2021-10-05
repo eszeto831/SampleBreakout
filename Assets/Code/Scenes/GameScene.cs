@@ -13,6 +13,7 @@ public class GameScene : MonoBehaviour
     public BoxCollider2D GameWorldBoundary;
     public GameObject CountdownContainer;
     public TextMeshProUGUI CountdownText;
+    public GameObject SFXContainer;
 
     void Start()
 	{
@@ -22,7 +23,7 @@ public class GameScene : MonoBehaviour
     void initStage()
     {
         var stage = new Stage();
-        stage.Init(GameWorldContainer, CountdownContainer, CountdownText);
+        stage.Init(GameWorldContainer, CountdownContainer, CountdownText, SFXContainer);
         GameInstanceManager.Instance.SetCurrentGame(stage);
         createBoundary();
         stage.StartStage();

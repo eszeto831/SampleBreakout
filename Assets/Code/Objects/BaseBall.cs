@@ -4,6 +4,10 @@ public class BaseBall : MonoBehaviour
 {
     public SpriteRenderer Sprite;
     public BoxCollider2D HitBox;
+    public AudioClip BounceSFX;
+    public GameObject DeathVFX;
+    public AudioClip DeathSFX;
+    public GameObject SFXContainer;
 
     private float m_defaultSpeed;
     private float m_speedBoost;
@@ -25,6 +29,20 @@ public class BaseBall : MonoBehaviour
     {
         Vector2 velocity = new Vector2(0, 0);
         GetComponent<Rigidbody2D>().velocity = velocity;
+    }
+
+    public void KillBall()
+    {
+        //vfx
+        var explosionVFX = GameObject.Instantiate(DeathVFX) as GameObject;
+        explosionVFX.transform.localPosition = gameObject.transform.localPosition;
+
+        //sfx
+        var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+        var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+        audioObj.Init(DeathSFX);
+
+        StopBall();
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -69,6 +87,11 @@ public class BaseBall : MonoBehaviour
                 var velocity = GetComponent<Rigidbody2D>().velocity;
                 GetComponent<Rigidbody2D>().velocity = new Vector2((velocity.x * -1) + paddle.GetMomentumModifier(), velocity.y);
             }
+
+            //sfx
+            var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+            var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+            audioObj.Init(BounceSFX);
         }
 
         var deathBoundary = other.gameObject.GetComponentInParent<BoundaryDeath>();
@@ -133,9 +156,17 @@ public class BaseBall : MonoBehaviour
             
             if (brick != null)
             {
+                GameInstanceManager.Instance.CurrentGame.RemoveBrick(brick);
                 brick.Kill();
                 m_speedBoost = brick.GetSpeedBoost();
                 GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity.normalized * m_defaultSpeed * m_speedBoost;
+            }
+            else
+            {
+                //sfx
+                var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+                var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+                audioObj.Init(BounceSFX);
             }
 
             m_currentTriggeredCollider = null;

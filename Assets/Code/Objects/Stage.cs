@@ -18,6 +18,7 @@ public class Stage
     public GameScene.Boundary Boundary;
     public GameObject CountdownContainer;
     public TextMeshProUGUI CountdownText;
+    public GameObject SFXContainer;
 
     private bool m_pause = false;
     private BaseBall m_ball;
@@ -27,13 +28,27 @@ public class Stage
     private float m_countdownStartTime;
     private CountdownStates m_countdownState;
 
-    public void Init(GameObject gameWorldContainer, GameObject countdownContainer, TextMeshProUGUI countdownText)
+    private bool m_restartActive;
+    private float m_restartStartTime;
+
+    private GameObject WinVFX;
+    private AudioClip WinSFX;
+    private AudioClip CountdownSFX;
+    private AudioClip CountdownSFX2;
+
+    public void Init(GameObject gameWorldContainer, GameObject countdownContainer, TextMeshProUGUI countdownText, GameObject sfxContainer)
     {
+        WinVFX = Resources.Load("VFX/ExplosionWhiteout") as GameObject;
+        WinSFX = Resources.Load("Audio/Sound/39068__alienbomb__explosion-1") as AudioClip;
+        CountdownSFX = Resources.Load("Audio/Sound/554056__gronkjaer__clockbeep") as AudioClip;
+        CountdownSFX2 = Resources.Load("Audio/Sound/369867__samsterbirdies__radio-beep") as AudioClip;
+
         m_bricks = new List<BaseBrick>();
 
         GameWorldContainer = gameWorldContainer;
         CountdownContainer = countdownContainer;
         CountdownText = countdownText;
+        SFXContainer = sfxContainer;
 
         initPaddle();
         initBall();
@@ -43,6 +58,16 @@ public class Stage
     public void StartStage()
     {
         StartCountdown();
+    }
+
+    public void RestartGame()
+    {
+        m_bricks = new List<BaseBrick>();
+        var ballConfig = GameConfig.Instance.Ball;
+        m_ball.Init(ballConfig);
+        m_ball.transform.localPosition = new Vector3(ballConfig.StartingPosition.X, ballConfig.StartingPosition.Y, 0);
+        initGameField();
+        StartStage();
     }
 
     public void StartCountdown()
@@ -127,11 +152,33 @@ public class Stage
 
     public void ResetBall()
     {
-        m_ball.StopBall();
+        m_ball.KillBall();
         var ballConfig = GameConfig.Instance.Ball;
         m_ball.Init(ballConfig);
         m_ball.transform.localPosition = new Vector3(ballConfig.StartingPosition.X, ballConfig.StartingPosition.Y, 0);
         StartCountdown();
+    }
+
+    public void RemoveBrick(BaseBrick brick)
+    {
+        m_bricks.Remove(brick);
+        if(m_bricks.Count == 0)
+        {
+            m_ball.StopBall();
+            var explosionPos = m_ball.gameObject.transform.localPosition;
+
+            //vfx
+            var explosionVFX = GameObject.Instantiate(WinVFX) as GameObject;
+            explosionVFX.transform.localPosition = explosionPos;
+
+            //sfx
+            var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+            var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+            audioObj.Init(WinSFX);
+
+            m_restartActive = true;
+            m_restartStartTime = Time.time;
+        }
     }
 
     public void GameUpdate()
@@ -154,6 +201,11 @@ public class Stage
             {
                 countdown();
             }
+
+            if (m_restartActive)
+            {
+                restart();
+            }
         }
     }
 
@@ -170,6 +222,11 @@ public class Stage
             CountdownText.transform.localScale = new Vector3(1, 1, 1);
             CountdownText.DOFade(0, 0.7f);
             m_countdownState = CountdownStates.TWO;
+
+            //sfx
+            var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+            var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+            audioObj.Init(CountdownSFX);
         }
         else if (m_countdownState == CountdownStates.TWO && Time.time - m_countdownStartTime > 1)
         {
@@ -182,6 +239,11 @@ public class Stage
             CountdownText.transform.localScale = new Vector3(1, 1, 1);
             CountdownText.DOFade(0, 0.7f);
             m_countdownState = CountdownStates.ONE;
+
+            //sfx
+            var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+            var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+            audioObj.Init(CountdownSFX);
         }
         else if (m_countdownState == CountdownStates.ONE && Time.time - m_countdownStartTime > 2)
         {
@@ -194,6 +256,11 @@ public class Stage
             CountdownText.transform.localScale = new Vector3(1, 1, 1);
             CountdownText.DOFade(0, 0.7f);
             m_countdownState = CountdownStates.START;
+
+            //sfx
+            var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+            var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+            audioObj.Init(CountdownSFX);
         }
         else if (m_countdownState == CountdownStates.START && Time.time - m_countdownStartTime > 3)
         {
@@ -210,6 +277,20 @@ public class Stage
             CountdownContainer.transform.DOScaleY(0f, 0.2f).SetDelay(.3f);
             m_ball.StartBall();
             m_countdownActive = false;
+
+            //sfx
+            var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
+            var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
+            audioObj.Init(CountdownSFX2);
+        }
+    }
+
+    void restart()
+    {
+        if (Time.time - m_restartStartTime > 2)
+        {
+            m_restartActive = false;
+            RestartGame();
         }
     }
 }

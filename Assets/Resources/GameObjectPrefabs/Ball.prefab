@@ -176,6 +176,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Sprite: {fileID: 5816485972029100940}
   HitBox: {fileID: 0}
+  BounceSFX: {fileID: 8300000, guid: c6ae6ecc9fc946d4f82155cfd903c60b, type: 3}
+  DeathVFX: {fileID: 1099213033080074, guid: 32e50d4e903ecb6419ef6df81d0e4eb9, type: 3}
+  DeathSFX: {fileID: 8300000, guid: 469f2ec44cc0ecf4e9c9be045dc84926, type: 3}
+  SFXContainer: {fileID: 1364986870643778982, guid: 103e285f3ba7ad14488326fa085f7c71,
+    type: 3}
 --- !u!50 &4466835154346028929
 Rigidbody2D:
   serializedVersion: 4
