@@ -793,12 +793,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8207951883373831968, guid: 5b94ea28ba0bf9a409d3940225d1aa46,
-        type: 3}
-      propertyPath: DeathSFXContainer
-      value: 
-      objectReference: {fileID: 1364986870643778982, guid: 103e285f3ba7ad14488326fa085f7c71,
-        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5b94ea28ba0bf9a409d3940225d1aa46, type: 3}
 --- !u!1001 &6245325467400002533
