@@ -26,48 +26,6 @@ public class BaseBall : MonoBehaviour
         if (brick != null)
         {
             m_currentTriggeredCollider = brick;
-            /*
-            var brickPosition = brick.gameObject.transform.localPosition;
-            var brickWidth = brick.Sprite.bounds.size.x;
-            var brickHeight = brick.Sprite.bounds.size.y;
-            var hit = false;
-            if (gameObject.transform.localPosition.y <= brickPosition.y - (brickHeight / 2))
-            {
-                //Hit was from below the brick
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
-                hit = true;
-                Debug.LogError("edmond :: hit from below?");
-            }
-            if (gameObject.transform.localPosition.y >= brickPosition.y + (brickHeight / 2))
-            {
-                //Hit was from above the brick
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
-                hit = true;
-                Debug.LogError("edmond :: hit from top?");
-            }
-            if (gameObject.transform.localPosition.x < brickPosition.x - (brickWidth / 2))
-            {
-                //Hit was on left
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
-                hit = true;
-                Debug.LogError("edmond :: hit from left?");
-            }
-            if (gameObject.transform.localPosition.x > brickPosition.x + (brickWidth / 2))
-            {
-                //Hit was on right
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
-                hit = true;
-                Debug.LogError("edmond :: hit from right?");
-            }
-            if(!hit)
-            {
-                Debug.LogError("edmond :: why?");
-            }
-            */
         }
 
         var paddle = other.gameObject.GetComponentInParent<BasePaddle>();
@@ -152,7 +110,6 @@ public class BaseBall : MonoBehaviour
                 var velocity = GetComponent<Rigidbody2D>().velocity;
                 GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
                 hit = true;
-                Debug.LogError("edmond :: hit from below?");
             }
             if (gameObject.transform.localPosition.y >= brickPosition.y + (brickHeight / 2))
             {
@@ -160,7 +117,6 @@ public class BaseBall : MonoBehaviour
                 var velocity = GetComponent<Rigidbody2D>().velocity;
                 GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
                 hit = true;
-                Debug.LogError("edmond :: hit from top?");
             }
             if (gameObject.transform.localPosition.x < brickPosition.x - (brickWidth / 2))
             {
@@ -168,7 +124,6 @@ public class BaseBall : MonoBehaviour
                 var velocity = GetComponent<Rigidbody2D>().velocity;
                 GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
                 hit = true;
-                Debug.LogError("edmond :: hit from left?");
             }
             if (gameObject.transform.localPosition.x > brickPosition.x + (brickWidth / 2))
             {
@@ -176,11 +131,6 @@ public class BaseBall : MonoBehaviour
                 var velocity = GetComponent<Rigidbody2D>().velocity;
                 GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
                 hit = true;
-                Debug.LogError("edmond :: hit from right?");
-            }
-            if (!hit)
-            {
-                Debug.LogError("edmond :: why?");
             }
             m_currentTriggeredCollider = null;
         }
