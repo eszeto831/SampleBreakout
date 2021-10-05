@@ -15,8 +15,13 @@ public class BaseBall : MonoBehaviour
 
     public void StartBall()
     {
-
         Vector2 velocity = new Vector2(Random.Range(-.2f,.2f), -1).normalized * m_currentSpeed;
+        GetComponent<Rigidbody2D>().velocity = velocity;
+    }
+
+    public void StopBall()
+    {
+        Vector2 velocity = new Vector2(0, 0);
         GetComponent<Rigidbody2D>().velocity = velocity;
     }
 
@@ -59,43 +64,16 @@ public class BaseBall : MonoBehaviour
                 GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
             }
         }
+
+        var deathBoundary = other.gameObject.GetComponentInParent<BoundaryDeath>();
+        if (deathBoundary != null)
+        {
+            GameInstanceManager.Instance.CurrentGame.ResetBall();
+        }
     }
 
     void OnTriggerExit2D(Collider2D other)
     {
-        /*
-        var border = other.gameObject.GetComponentInParent<BaseBorder>();
-        if (border != null)
-        {
-            var borderPosition = border.gameObject.transform.localPosition;
-            var borderWidth = border.Sprite.bounds.size.x;
-            var borderHeight = border.Sprite.bounds.size.y;
-
-            var ballWidth = Sprite.bounds.size.x;
-            var ballHeight = Sprite.bounds.size.y;
-
-            if (gameObject.transform.localPosition.y + (ballHeight / 2) <= borderPosition.y - (borderHeight / 2))
-            {
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
-            }
-            if (gameObject.transform.localPosition.y - (ballHeight / 2) >= borderPosition.y + (borderHeight / 2))
-            {
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
-            }
-            if (gameObject.transform.localPosition.x + (ballWidth / 2) < borderPosition.x - (borderWidth / 2))
-            {
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
-            }
-            if (gameObject.transform.localPosition.x - (ballWidth / 2) > borderPosition.x + (borderWidth / 2))
-            {
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
-            }
-        }
-        */
     }
 
     public void GameUpdate()

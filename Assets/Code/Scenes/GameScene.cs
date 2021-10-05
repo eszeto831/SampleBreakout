@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class GameScene : MonoBehaviour
@@ -10,6 +11,8 @@ public class GameScene : MonoBehaviour
 
     public GameObject GameWorldContainer;
     public BoxCollider2D GameWorldBoundary;
+    public GameObject CountdownContainer;
+    public TextMeshProUGUI CountdownText;
 
     void Start()
 	{
@@ -19,10 +22,10 @@ public class GameScene : MonoBehaviour
     void initStage()
     {
         var stage = new Stage();
-        stage.Init(GameWorldContainer);
+        stage.Init(GameWorldContainer, CountdownContainer, CountdownText);
         GameInstanceManager.Instance.SetCurrentGame(stage);
         createBoundary();
-        stage.Start();
+        stage.StartStage();
     }
 
     void createBoundary()

@@ -1,28 +1,54 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Stage
 {
+    private enum CountdownStates
+    {
+        THREE,
+        TWO,
+        ONE,
+        START
+    }
+
     public GameObject GameWorldContainer;
     public GameScene.Boundary Boundary;
+    public GameObject CountdownContainer;
+    public TextMeshProUGUI CountdownText;
 
     private bool m_pause = false;
     private BaseBall m_ball;
     private List<BaseBrick> m_bricks;
 
-    public void Init(GameObject gameWorldContainer)
+    private bool m_countdownActive;
+    private float m_countdownStartTime;
+    private CountdownStates m_countdownState;
+
+    public void Init(GameObject gameWorldContainer, GameObject countdownContainer, TextMeshProUGUI countdownText)
     {
         m_bricks = new List<BaseBrick>();
 
         GameWorldContainer = gameWorldContainer;
+        CountdownContainer = countdownContainer;
+        CountdownText = countdownText;
+
         initPaddle();
         initBall();
         initGameField();
     }
 
-    public void Start()
+    public void StartStage()
     {
-        m_ball.StartBall();
+        StartCountdown();
+    }
+
+    public void StartCountdown()
+    {
+        m_countdownActive = true;
+        m_countdownStartTime = Time.time;
+        m_countdownState = CountdownStates.THREE;
     }
 
     void initPaddle()
@@ -95,6 +121,15 @@ public class Stage
         }
     }
 
+    public void ResetBall()
+    {
+        m_ball.StopBall();
+        var ballConfig = GameConfig.Instance.Ball;
+        m_ball.Init(ballConfig);
+        m_ball.transform.localPosition = new Vector3(ballConfig.StartingPosition.X, ballConfig.StartingPosition.Y, 0);
+        StartCountdown();
+    }
+
     public void GameUpdate()
     {
         if (!m_pause)
@@ -110,6 +145,42 @@ public class Stage
         {
             GameInstanceManager.Instance.CurrentPlayer.Controller.FixedGameUpdate();
             m_ball.FixedGameUpdate();
+
+            if (m_countdownActive)
+            {
+                countdown();
+            }
+        }
+    }
+
+    void countdown()
+    {
+        if(m_countdownState == CountdownStates.THREE)
+        {
+            Debug.LogError("edmond :: 3");
+            CountdownContainer.SetActive(true);
+            CountdownText.text = "3";
+            m_countdownState = CountdownStates.TWO;
+        }
+        else if (m_countdownState == CountdownStates.TWO && Time.time - m_countdownStartTime > 1)
+        {
+            Debug.LogError("edmond :: 2");
+            CountdownText.text = "2";
+            m_countdownState = CountdownStates.ONE;
+        }
+        else if (m_countdownState == CountdownStates.ONE && Time.time - m_countdownStartTime > 2)
+        {
+            Debug.LogError("edmond :: 1");
+            CountdownText.text = "1";
+            m_countdownState = CountdownStates.START;
+        }
+        else if (m_countdownState == CountdownStates.START && Time.time - m_countdownStartTime > 3)
+        {
+            Debug.LogError("edmond :: start");
+            CountdownText.text = "Start";
+            CountdownContainer.SetActive(false);
+            m_ball.StartBall();
+            m_countdownActive = false;
         }
     }
 }
