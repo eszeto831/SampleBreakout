@@ -36,6 +36,7 @@ public class BaseBall : MonoBehaviour
         //vfx
         var explosionVFX = GameObject.Instantiate(DeathVFX) as GameObject;
         explosionVFX.transform.localPosition = gameObject.transform.localPosition;
+        VFXUtils.SetVFXSortingLayer(explosionVFX, "VFX");
 
         //sfx
         var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;

@@ -170,6 +170,7 @@ public class Stage
             //vfx
             var explosionVFX = GameObject.Instantiate(WinVFX) as GameObject;
             explosionVFX.transform.localPosition = explosionPos;
+            VFXUtils.SetVFXSortingLayer(explosionVFX, "VFX");
 
             //sfx
             var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
