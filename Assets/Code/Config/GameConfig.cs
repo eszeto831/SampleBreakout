@@ -9,6 +9,7 @@ public class GameConfig
 	public DataWall Wall;
     public DataBall Ball;
     public DataPaddle Paddle;
+    public DataBricks Bricks;
 
     private static GameConfig m_Instance;
 
@@ -38,6 +39,7 @@ public class GameConfig
         Wall = Config.Wall;
         Ball = Config.Ball;
         Paddle = Config.Paddle;
+        Bricks = Config.Bricks;
     }
     
 }

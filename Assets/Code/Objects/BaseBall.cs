@@ -111,6 +111,13 @@ public class BaseBall : MonoBehaviour
                 var velocity = GetComponent<Rigidbody2D>().velocity;
                 GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
             }
+
+            var brick = m_currentTriggeredCollider.gameObject.GetComponent<BaseBrick>();
+            if (brick != null)
+            {
+                brick.Kill();
+            }
+
             m_currentTriggeredCollider = null;
         }
     }

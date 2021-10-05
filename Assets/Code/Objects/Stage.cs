@@ -107,6 +107,8 @@ public class Stage
 
         for (var i = 0; i < wallConfig.Size.Y; i++)
         {
+            var colorIndex = Math.Min(i, GameConfig.Instance.Bricks.Color.Count - 1); //Math.Max(GameConfig.Instance.Bricks.Color.Count - 1 - i, 0);
+            var speedBoostIndex = Math.Min(i, GameConfig.Instance.Bricks.SpeedBoost.Count - 1); //Math.Max(GameConfig.Instance.Bricks.SpeedBoost.Count - 1 - i, 0);
             for (var j = 0; j < wallConfig.Size.X; j++)
             {
                 var brickObj = GameObject.Instantiate(brickResource) as GameObject;
@@ -116,6 +118,7 @@ public class Stage
 
                 var brick = brickObj.GetComponent<BaseBrick>();
                 brick.Init();
+                brick.SetProperties(GameConfig.Instance.Bricks.Color[colorIndex], GameConfig.Instance.Bricks.SpeedBoost[colorIndex]);
 
                 m_bricks.Add(brick);
             }

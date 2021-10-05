@@ -5,4 +5,5 @@ public class DataGameConfig
 	public DataWall Wall;
     public DataBall Ball;
     public DataPaddle Paddle;
+    public DataBricks Bricks;
 }
