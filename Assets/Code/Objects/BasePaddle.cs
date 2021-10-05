@@ -24,4 +24,9 @@ public class BasePaddle : MonoBehaviour
 
         gameObject.transform.position = MovementUtils.ModifyPositionWithBounds(gameObject.transform.position, Sprite);
     }
+
+    public float GetMomentumModifier()
+    {
+        return GetComponent<Rigidbody2D>().velocity.x * .25f;
+    }
 }

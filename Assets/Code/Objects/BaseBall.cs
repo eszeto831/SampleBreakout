@@ -47,25 +47,25 @@ public class BaseBall : MonoBehaviour
             {
                 //Hit was from below the paddle
                 var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x + paddle.GetMomentumModifier(), velocity.y * -1);
             }
             if (gameObject.transform.localPosition.y >= top)
             {
                 //Hit was from above the paddle
                 var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
+                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x + paddle.GetMomentumModifier(), velocity.y * -1);
             }
             if (gameObject.transform.localPosition.x <= left)
             {
                 //Hit was on left
                 var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
+                GetComponent<Rigidbody2D>().velocity = new Vector2((velocity.x * -1) + paddle.GetMomentumModifier(), velocity.y);
             }
             if (gameObject.transform.localPosition.x >= right)
             {
                 //Hit was on right
                 var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
+                GetComponent<Rigidbody2D>().velocity = new Vector2((velocity.x * -1) + paddle.GetMomentumModifier(), velocity.y);
             }
         }
 
