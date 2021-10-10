@@ -16,7 +16,7 @@ public class BaseBall : MonoBehaviour
     public void Init(DataBall config)
     {
         m_defaultSpeed = config.StartingSpeed;
-        m_speedBoost = 0;
+        m_speedBoost = 1;
     }
 
     public void StartBall()
@@ -48,12 +48,18 @@ public class BaseBall : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        //check for brick/wall collision, only allow one collision with brick/wall per fixed update loop to prevent weird bounces
+        //wall gets priority
         var collidableObject = other.gameObject.GetComponentInParent<CollidableObject>();
         if (collidableObject != null)
         {
-            m_currentTriggeredCollider = collidableObject;
+            if (!(m_currentTriggeredCollider != null && m_currentTriggeredCollider is BoundaryWall))
+            {
+                m_currentTriggeredCollider = collidableObject;
+            }
         }
 
+        //check for paddle collision
         var paddle = other.gameObject.GetComponentInParent<BasePaddle>();
         if (paddle != null)
         {
@@ -63,31 +69,11 @@ public class BaseBall : MonoBehaviour
             float btm = collider.offset.y - (collider.size.y / 2f) + paddle.transform.localPosition.y;
             float left = collider.offset.x - (collider.size.x / 2f) + paddle.transform.localPosition.x;
             float right = collider.offset.x + (collider.size.x / 2f) + paddle.transform.localPosition.x;
-            
-            if (gameObject.transform.localPosition.y <= btm)
-            {
-                //Hit was from below the paddle
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x + paddle.GetMomentumModifier(), velocity.y * -1);
-            }
-            if (gameObject.transform.localPosition.y >= top)
-            {
-                //Hit was from above the paddle
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x + paddle.GetMomentumModifier(), velocity.y * -1);
-            }
-            if (gameObject.transform.localPosition.x <= left)
-            {
-                //Hit was on left
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2((velocity.x * -1) + paddle.GetMomentumModifier(), velocity.y);
-            }
-            if (gameObject.transform.localPosition.x >= right)
-            {
-                //Hit was on right
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2((velocity.x * -1) + paddle.GetMomentumModifier(), velocity.y);
-            }
+
+            var directionModifier = getDirectionChange(top, btm, left, right);
+            directionModifier.y = -1;//paddle should bounce ball back up even if the ball hits the sides
+            var velocity = GetComponent<Rigidbody2D>().velocity;
+            GetComponent<Rigidbody2D>().velocity = new Vector2((velocity.x) + paddle.GetMomentumModifier(), velocity.y).normalized * directionModifier * m_defaultSpeed * m_speedBoost;
 
             //sfx
             var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
@@ -95,11 +81,42 @@ public class BaseBall : MonoBehaviour
             audioObj.Init(BounceSFX);
         }
 
+        //check for bottom out of bounds collision
         var deathBoundary = other.gameObject.GetComponentInParent<BoundaryDeath>();
         if (deathBoundary != null)
         {
             GameInstanceManager.Instance.CurrentGame.ResetBallAndPaddle();
         }
+    }
+
+    Vector2 getDirectionChange(float collidedObjTop, float collidedObjBot, float collidedObjLeft, float collidedObjRight)
+    {
+        var directionChange = Vector2.one;
+        if (gameObject.transform.localPosition.y <= collidedObjBot)
+        {
+            //Hit was from below
+            directionChange.x = 1;
+            directionChange.y = -1;
+        }
+        if (gameObject.transform.localPosition.y >= collidedObjTop)
+        {
+            //Hit was from above
+            directionChange.x = 1;
+            directionChange.y = -1;
+        }
+        if (gameObject.transform.localPosition.x <= collidedObjLeft)
+        {
+            //Hit was on left
+            directionChange.x = -1;
+            directionChange.y = 1;
+        }
+        if (gameObject.transform.localPosition.x >= collidedObjRight)
+        {
+            //Hit was on right
+            directionChange.x = -1;
+            directionChange.y = 1;
+        }
+        return directionChange;
     }
 
     void OnTriggerExit2D(Collider2D other)
@@ -112,6 +129,7 @@ public class BaseBall : MonoBehaviour
 
     public void FixedGameUpdate()
     {
+        //brick and wall collision logic
         if (m_currentTriggeredCollider != null)
         {
             BoxCollider2D collider = m_currentTriggeredCollider.HitBox;
@@ -130,46 +148,25 @@ public class BaseBall : MonoBehaviour
                 right += brick.transform.localPosition.x;
             }
 
-            if (gameObject.transform.localPosition.y <= btm)
-            {
-                //Hit was from below the brick
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
-            }
-            if (gameObject.transform.localPosition.y >= top)
-            {
-                //Hit was from above the brick
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x, velocity.y * -1);
-            }
-            if (gameObject.transform.localPosition.x <= left)
-            {
-                //Hit was on left
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
-            }
-            if (gameObject.transform.localPosition.x >= right)
-            {
-                //Hit was on right
-                var velocity = GetComponent<Rigidbody2D>().velocity;
-                GetComponent<Rigidbody2D>().velocity = new Vector2(velocity.x * -1, velocity.y);
-            }
-            
+            var directionModifier = getDirectionChange(top, btm, left, right);
+
             if (brick != null)
             {
                 GameInstanceManager.Instance.CurrentGame.RemoveBrick(brick);
                 brick.Kill();
                 m_speedBoost = brick.GetSpeedBoost();
-                GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity.normalized * m_defaultSpeed * m_speedBoost;
+                GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity.normalized * directionModifier * m_defaultSpeed * m_speedBoost;
             }
             else
             {
+                //hit wall
+                GetComponent<Rigidbody2D>().velocity = GetComponent<Rigidbody2D>().velocity * directionModifier;
+
                 //sfx
                 var explosionSFX = GameObject.Instantiate(SFXContainer) as GameObject;
                 var audioObj = explosionSFX.GetComponent<SelfDestroyingAudio>();
                 audioObj.Init(BounceSFX);
             }
-
             m_currentTriggeredCollider = null;
         }
     }
